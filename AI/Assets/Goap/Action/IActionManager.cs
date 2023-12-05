@@ -9,6 +9,7 @@ namespace SRAI
 {
     public interface IActionManager<TAction>
     {
+        TAction GetDefualtActionLabel();
         bool IsPerformAction { get; set; }
         void AddHander(TAction label);
         void RemoveHandler(TAction label);
@@ -32,6 +33,9 @@ namespace SRAI
         private System.Action _onActionComplete;
 
         public bool IsPerformAction { get; set; }
+
+        public abstract TAction GetDefualtActionLabel(); 
+       
 
         public ActionManagerBase(IAgent<TAction, TGoal> agent)
         {

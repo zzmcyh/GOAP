@@ -6,13 +6,28 @@ namespace SRAI
 {
     public class Tree<TAction>
     {
+        public TreeNode<TAction> CreateTopNode()
+        {
+            TreeNode<TAction>.Reset();
+            return new TreeNode<TAction>(null);
+        }
+
+        public TreeNode<TAction> CreateNormalNode(IActionHandler<TAction> actionHandler)
+        {
+            if (actionHandler == null)
+                DebugMsg.LogError("actionHandler is null");
+            return new TreeNode<TAction>(actionHandler);
+        }
 
     }
     public class TreeNode<TAction>
     {
+
+        public const int DEFAULT_ID = 0;
+
         private static int _id;
         public int ID { get; private set; }
-        IActionHandler<IAction<TAction>> ActionHandler { get;  set; }
+        IActionHandler<TAction> ActionHandler { get;  set; }
 
         public IState CurrentState { get; set; }
 
@@ -24,7 +39,7 @@ namespace SRAI
 
 
 
-        public TreeNode(IActionHandler<IAction<TAction>> actionHandler)
+        public TreeNode(IActionHandler<TAction> actionHandler)
         {
             ID=_id++;
             ActionHandler = actionHandler;
@@ -34,9 +49,10 @@ namespace SRAI
             GoalState = GoalState.CreateState();
         }
 
-        private void Reset()
+        public static void Reset()
         {
-            _id = 0;
+            _id = DEFAULT_ID;
+           
         }
 
     }

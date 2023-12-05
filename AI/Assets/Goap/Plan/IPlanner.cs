@@ -11,7 +11,7 @@ namespace SRAI
 
 
     }
-    public class Planner<TAction, TGoal, TState> : IPlanner<TAction, TGoal>
+    public class Planner<TAction, TGoal> : IPlanner<TAction, TGoal>
     {
         IAgent<TAction, TGoal> _agent;
         public Planner(IAgent< TAction, TGoal> agent)
@@ -25,11 +25,29 @@ namespace SRAI
             {
                 return plan;
             }
+            TreeNode<TAction> currentNode = Plan(goal);
+
+            if (currentNode == null)
+            {
+                TAction label = _agent.ActionManager.GetDefualtActionLabel();
+                plan.Enqueue(_agent.ActionManager.GetHandler(label));
+
+                DebugMsg.LogError("currentNode is null");
+
+            }
+
+            while (currentNode.ID!=TreeNode<TAction>.DEFAULT_ID)
+            {
+
+            }
+
+
+
             return plan;
         }
 
 
-        private void Plan(IGoal<TGoal> goal)
+        private TreeNode<TAction> Plan(IGoal<TGoal> goal)
         {
 
         }

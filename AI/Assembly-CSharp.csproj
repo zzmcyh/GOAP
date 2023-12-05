@@ -65,7 +65,9 @@
     <Compile Include="Assets\Goap\Goal\IGoal.cs" />
     <Compile Include="Assets\Goap\Goal\IGoalManager.cs" />
     <Compile Include="Assets\Goap\Map\IMap.cs" />
+    <Compile Include="Assets\Goap\Plan\IPlanner.cs" />
     <Compile Include="Assets\Goap\State\IState.cs" />
+    <Compile Include="Assets\Goap\Tree\Tree.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

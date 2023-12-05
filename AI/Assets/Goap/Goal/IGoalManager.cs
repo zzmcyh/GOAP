@@ -5,35 +5,35 @@ using System.Linq;
 
 namespace SRAI
 {
-    public interface IGoalManager<TGoal, TState>
+    public interface IGoalManager<TGoal>
     {
-        IGoal<TGoal, TState> Current { get; }
+        IGoal<TGoal> Current { get; }
         void AddGoal(TGoal label);
         void Remove(TGoal label);
-        IGoal<TGoal, TState> GetGoal(TGoal label);
-        IGoal<TGoal, TState> FindGoal();
+        IGoal<TGoal> GetGoal(TGoal label);
+        IGoal<TGoal> FindGoal();
         void UpdateData();
     }
 
-    public abstract class GoalManager<TGoal, TState, TAction> : IGoalManager<TGoal, TState>
+    public abstract class GoalManager<TGoal, TAction> : IGoalManager<TGoal>
     {
-        private Dictionary<TGoal, IGoal<TGoal, TState>> _goalDic;
-        private List<IGoal<TGoal, TState>> _activeGoals;
+        private Dictionary<TGoal, IGoal<TGoal>> _goalDic;
+        private List<IGoal<TGoal>> _activeGoals;
 
 
-        IAgent<TState, TAction, TGoal> _agent;
+        IAgent<TAction, TGoal> _agent;
 
-        public GoalManager(IAgent<TState, TAction, TGoal> agent)
+        public GoalManager(IAgent< TAction, TGoal> agent)
         {
             _agent = agent;
-            _goalDic = new Dictionary<TGoal, IGoal<TGoal, TState>>();
-            _activeGoals = new List<IGoal<TGoal, TState>>();
+            _goalDic = new Dictionary<TGoal, IGoal<TGoal>>();
+            _activeGoals = new List<IGoal<TGoal>>();
             InitGoals();
         }
         protected abstract void InitGoals();
 
 
-        public  IGoal<TGoal, TState> Current { get; private set; }
+        public  IGoal<TGoal> Current { get; private set; }
 
         public void AddGoal(TGoal label)
         {
@@ -59,7 +59,7 @@ namespace SRAI
 
 
         }
-        public IGoal<TGoal, TState> FindGoal() {
+        public IGoal<TGoal> FindGoal() {
 
             _activeGoals = _activeGoals.OrderByDescending((x) => x.GetPriority()).ToList();
             if (_activeGoals.Count > 0)
@@ -72,7 +72,7 @@ namespace SRAI
                 return null;
             }
         }
-        public IGoal<TGoal, TState> GetGoal(TGoal label)
+        public IGoal<TGoal> GetGoal(TGoal label)
         {
             if (_goalDic.ContainsKey(label))
             {

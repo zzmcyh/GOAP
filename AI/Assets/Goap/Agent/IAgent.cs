@@ -5,11 +5,13 @@ using UnityEngine;
 
 namespace SRAI
 {
-    public interface IAgent<TState,TAction,TGoal>
+    public interface IAgent<TAction,TGoal>
+      
+        
     {
-        IState<TState> AgentSate { get; }
+        IState AgentSate { get; }
 
-        IMap<TAction, TGoal, TState> Map { get; }
+        IMap<TAction, TGoal> Map { get; }
 
         void UpdateDate();
 
@@ -17,16 +19,16 @@ namespace SRAI
     }
 
 
-    public abstract class AgentBase<TState, TAction, TGolal> : IAgent<TState, TAction, TGolal>
+    public abstract class AgentBase< TAction, TGolal> : IAgent<TAction, TGolal>
     {
-        public IState<TState> AgentSate { get; private set; }
-        public  IMap<TAction, TGolal, TState> Map { get; private set; }
+        public IState AgentSate { get; private set; }
+        public  IMap<TAction, TGolal> Map { get; private set; }
 
         public AgentBase()
         {
             DebugBase.Instance = InitDebugBase();
             Map = InitMap();
-            AgentSate = new State<TState>();
+            AgentSate = new State();
             AgentSate.AddStateChangeListener(UpdateDate);
 
           
@@ -34,7 +36,7 @@ namespace SRAI
         }
 
         protected abstract DebugBase InitDebugBase();
-        protected abstract IMap<TAction, TGolal, TState> InitMap();
+        protected abstract IMap<TAction, TGolal> InitMap();
         public void UpdateDate()
         {
             

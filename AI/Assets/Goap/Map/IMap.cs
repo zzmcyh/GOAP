@@ -4,36 +4,36 @@ using UnityEngine;
 
 namespace SRAI
 {
-    public interface IMap<TAction, TGoal, TState> 
+    public interface IMap<TAction, TGoal> 
     {
-        IActionHandler<TAction,TState> GetActionHandler(TAction actionLabel);
+        IActionHandler<TAction> GetActionHandler(TAction actionLabel);
 
-        IGoal<TGoal, TState> GetGoal(TGoal label);
+        IGoal<TGoal> GetGoal(TGoal label);
 
         void SetGameData<Tkey>(Tkey key,object data);
         object GetGameData<Tkey>(Tkey key);
     }
 
-    public abstract class MapBase<TAction, TGoal, TState> : IMap<TAction, TGoal, TState>
+    public abstract class MapBase<TAction, TGoal> : IMap<TAction, TGoal>
     {
-        private Dictionary<TAction, IActionHandler<TAction, TState>> _actionHandlerDic;
-        private Dictionary<TGoal, IGoal<TGoal, TState>> _goalDic;
+        private Dictionary<TAction, IActionHandler<TAction>> _actionHandlerDic;
+        private Dictionary<TGoal, IGoal<TGoal>> _goalDic;
 
         private Dictionary<string, object> _gameDataDic;
 
 
         public MapBase()
         {
-            _actionHandlerDic = new Dictionary<TAction, IActionHandler<TAction, TState>>();
-            _goalDic = new Dictionary<TGoal, IGoal<TGoal, TState>>();
+            _actionHandlerDic = new Dictionary<TAction, IActionHandler<TAction>>();
+            _goalDic = new Dictionary<TGoal, IGoal<TGoal>>();
             _gameDataDic = new Dictionary<string, object>();
             InitActionMap();
             InitGoalMap();
             InitGameData();
         }
-        public IActionHandler<TAction, TState> GetActionHandler(TAction actionLabel)
+        public IActionHandler<TAction> GetActionHandler(TAction actionLabel)
         {
-            IActionHandler<TAction, TState> handler;
+            IActionHandler<TAction> handler;
             _actionHandlerDic.TryGetValue(actionLabel, out handler);
             if (handler==null)
             {
@@ -49,7 +49,7 @@ namespace SRAI
         protected abstract void InitGameData();
 
 
-        protected void AddAction(IActionHandler<TAction, TState> handler)
+        protected void AddAction(IActionHandler<TAction> handler)
         {
             if (!_actionHandlerDic.ContainsKey(handler.Label))
             {
@@ -61,9 +61,9 @@ namespace SRAI
             }
         }
 
-        public IGoal<TGoal, TState> GetGoal(TGoal label)
+        public IGoal<TGoal> GetGoal(TGoal label)
         {
-            IGoal<TGoal, TState> goal;
+            IGoal<TGoal> goal;
             _goalDic.TryGetValue(label, out goal);
             if (goal == null)
             {
@@ -73,7 +73,7 @@ namespace SRAI
             return goal;
         }
 
-        protected void AddGoal(IGoal<TGoal, TState> goal)
+        protected void AddGoal(IGoal<TGoal> goal)
         {
             if (!_goalDic.ContainsKey(goal.label))
             {

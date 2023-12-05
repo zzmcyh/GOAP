@@ -4,19 +4,19 @@ using UnityEngine;
 
 namespace SRAI
 {
-    public interface IAction<TAction, TState>
+    public interface IAction<TAction>
     {
         TAction Label { get; }
         int Cost { get; }//花费
         int Priority { get; }//优先级。如果花费相同就看谁的优先级高
         bool CanInterruptiblePlan { get; }  //是否可以打断计划
-        IState<TState> Preconditions { get; }//先决条件
-        IState<TState> Effect { get; } //完成后对结果的影响
+        IState Preconditions { get; }//先决条件
+        IState Effect { get; } //完成后对结果的影响
         bool VerifyPreconditions();//验证先决条件是否满足
     }
 
 
-    public abstract class ActionBase<TAction, TState, TGoal> : IAction<TAction, TState>
+    public abstract class ActionBase<TAction, TState, TGoal> : IAction<TAction>
     {
         public abstract TAction Label { get; }
 
@@ -26,14 +26,14 @@ namespace SRAI
 
         public abstract bool CanInterruptiblePlan { get; }
 
-        public IState<TState> Preconditions { get; private set; }
+        public IState Preconditions { get; private set; }
 
-        public IState<TState> Effect { get; }
+        public IState Effect { get; }
 
 
-        private IAgent<TState, TAction, TGoal> _agent;
+        private IAgent<TAction, TGoal> _agent;
 
-        public ActionBase(IAgent<TState, TAction, TGoal> agent)
+        public ActionBase(IAgent< TAction, TGoal> agent)
         {
             Preconditions = InitPreconditions();
             Effect = InitEffects();
@@ -41,8 +41,8 @@ namespace SRAI
         }
 
 
-        public abstract IState<TState> InitPreconditions();
-        public abstract IState<TState> InitEffects();
+        public abstract IState InitPreconditions();
+        public abstract IState InitEffects();
 
         public bool VerifyPreconditions()
         {

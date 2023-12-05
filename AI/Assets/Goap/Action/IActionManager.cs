@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace SRAI
 {
-    public interface IActionManager<TAction, TState>
+    public interface IActionManager<TAction>
     {
         bool IsPerformAction { get; set; }
         void AddHander(TAction label);
         void RemoveHandler(TAction label);
-        IActionHandler<TAction, TState> GetHandler(TAction label);
+        IActionHandler<TAction> GetHandler(TAction label);
         void UpdateData();
         void FrameFun();
         void ChangeCurrentAction(TAction label);
@@ -21,24 +21,24 @@ namespace SRAI
 
 
 
-    public abstract class ActionManagerBase<TAction, TGoal, TState> : IActionManager<TAction, TState>
+    public abstract class ActionManagerBase<TAction, TGoal> : IActionManager<TAction>
     {
-        private Dictionary<TAction, IActionHandler<TAction, TState>> _handlerDic;
-        private List<IActionHandler<TAction, TState>> _InterruptibleHandlers;
+        private Dictionary<TAction, IActionHandler<TAction>> _handlerDic;
+        private List<IActionHandler<TAction>> _InterruptibleHandlers;
 
         private IFSM<TAction> _fsm;
     
-        private IAgent<TState, TAction, TGoal> _agent;
+        private IAgent<TAction, TGoal> _agent;
         private System.Action _onActionComplete;
 
         public bool IsPerformAction { get; set; }
 
-        public ActionManagerBase(IAgent<TState, TAction, TGoal> agent)
+        public ActionManagerBase(IAgent<TAction, TGoal> agent)
         {
             IsPerformAction = false;
             _onActionComplete = null;
-            _handlerDic = new Dictionary<TAction, IActionHandler<TAction, TState>>();
-            _InterruptibleHandlers = new List<IActionHandler<TAction, TState>>();
+            _handlerDic = new Dictionary<TAction, IActionHandler<TAction>>();
+            _InterruptibleHandlers = new List<IActionHandler<TAction>>();
             _fsm = new FSM<TAction>();
             _agent = agent;
             InitActionHandlers();
@@ -94,7 +94,7 @@ namespace SRAI
             _fsm.ChangeState(label);
         }
       
-        public IActionHandler<TAction, TState> GetHandler(TAction label)
+        public IActionHandler<TAction> GetHandler(TAction label)
         {
             if (_handlerDic.ContainsKey(label))
             {

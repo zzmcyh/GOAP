@@ -5,32 +5,43 @@ using System.Text;
 
 namespace SRAI
 {
-    public interface IState<TState>
+    public interface IState
     {
-        void Set(TState key,bool value);
-        bool Get(TState key);
-        void Set(IState<TState> otherState);
-        ICollection<TState> GetKeys();
-        bool ContainKey(TState key);
-        bool ContainState(IState<TState> otherState);
+        IState CreateState();
+        void Set(string key,bool value);
+        bool Get(string key);
+        void Set(IState otherState);
+        ICollection<string> GetKeys();
+        bool ContainKey(string key);
+        bool ContainState(IState otherState);
         void AddStateChangeListener(Action onchange);
         void Clear();
 
-        IState<TState> InversionValue();
+        IState InversionValue();
 
     }
 
-    public class State<TState> : IState<TState>
+    public static class IStateExtend
     {
-        Dictionary<TState, bool> _dataTable;
+        public static IState CreateState(this IState state)
+        {
+            return new State();
+        }
+    }
+
+
+
+    public class State : IState
+    {
+        Dictionary<string, bool> _dataTable;
 
         private Action _onChange;
         public State()
         {
-            _dataTable = new Dictionary<TState, bool>();
+            _dataTable = new Dictionary<string, bool>();
         }
 
-        public bool Get(TState key)
+        public bool Get(string key)
         {
             if (!_dataTable.ContainsKey(key))
             {
@@ -41,7 +52,7 @@ namespace SRAI
             return true;
         }
 
-        public void Set(TState key, bool value)
+        public void Set(string key, bool value)
         {
             if (_dataTable.ContainsKey(key)&&_dataTable[key]!=value)
             {
@@ -53,7 +64,7 @@ namespace SRAI
             }
         }
 
-        private void ChangeValue(TState key,bool value) 
+        private void ChangeValue(string key,bool value) 
         {
             _dataTable[key] = value;
             _onChange?.Invoke();
@@ -64,7 +75,7 @@ namespace SRAI
             _onChange = onchange;
         }
 
-        public void Set(IState<TState> otherState)
+        public void Set(IState otherState)
         {
             foreach (var key in otherState.GetKeys())
             {
@@ -72,17 +83,17 @@ namespace SRAI
             }
         }
 
-        public ICollection<TState> GetKeys()
+        public ICollection<string> GetKeys()
         {
             return _dataTable.Keys;
         }
 
-        public bool ContainKey(TState key)
+        public bool ContainKey(string key)
         {
             return _dataTable.ContainsKey(key);
         }
 
-        public bool ContainState(IState<TState> otherState)
+        public bool ContainState(IState otherState)
         {
             foreach (var key in otherState.GetKeys())
             {
@@ -115,15 +126,20 @@ namespace SRAI
             return temp.ToString();
         }
 
-        public IState<TState> InversionValue()
+        public IState InversionValue()
         {
-            IState<TState> state = new State<TState>();
+            IState state = new State();
             foreach (var item in _dataTable)
             {
                 state.Set(item.Key,!item.Value);
             }
             return state;
 
+        }
+
+        public IState CreateState()
+        {
+            return new State();
         }
     }
 

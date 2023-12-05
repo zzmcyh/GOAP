@@ -11,9 +11,9 @@ namespace SRAI
     /// 处理行为 
     /// </summary>
     /// <typeparam name="TAction"></typeparam>
-    public interface IActionHandler<TAction, TState>:IFSMState<TAction>
+    public interface IActionHandler<TAction>:IFSMState<TAction>
     {
-        IAction<TAction, TState> Action { get; }
+        IAction<TAction> Action { get; }
         TAction Label { get; }
         bool isComplete { get; }
         bool CanPerformAction { get; }//当前是否可以播放该动作
@@ -22,9 +22,9 @@ namespace SRAI
         
     }
 
-    public abstract class ActionHandlerBase<TState, TAction, TGolal> : IActionHandler<TAction, TState>
+    public abstract class ActionHandlerBase<TAction, TGolal> : IActionHandler<TAction>
     {
-        public  IAction<TAction, TState> Action { get; private set; }
+        public  IAction<TAction> Action { get; private set; }
         public  TAction Label { get { return Action.Label; } }
         public  bool isComplete { get; private set; }
         public  bool CanPerformAction { get; private set; }
@@ -32,9 +32,9 @@ namespace SRAI
 
         private Action _onFinishAction;
 
-        IAgent<TState, TAction, TGolal> _agent;
+        IAgent<TAction, TGolal> _agent;
 
-        public ActionHandlerBase(IAgent<TState, TAction, TGolal> agent,IAction<TAction, TState> action)
+        public ActionHandlerBase(IAgent<TAction, TGolal> agent,IAction<TAction> action)
         {
             if (action == null)
             {
@@ -63,7 +63,7 @@ namespace SRAI
         }
 
 
-        private void SetAgentState(IState<TState> state)
+        private void SetAgentState(IState state)
         {
             _agent.AgentSate.Set(state);
         }

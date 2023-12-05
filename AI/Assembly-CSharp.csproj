@@ -58,9 +58,13 @@
   <ItemGroup>
     <Compile Include="Assets\Goap\Action\IAction.cs" />
     <Compile Include="Assets\Goap\Action\IActionHandler.cs" />
+    <Compile Include="Assets\Goap\Action\IActionManager.cs" />
     <Compile Include="Assets\Goap\Agent\IAgent.cs" />
     <Compile Include="Assets\Goap\Debug\DebugBase.cs" />
     <Compile Include="Assets\Goap\FSM\IFSM.cs" />
+    <Compile Include="Assets\Goap\Goal\IGoal.cs" />
+    <Compile Include="Assets\Goap\Goal\IGoalManager.cs" />
+    <Compile Include="Assets\Goap\Map\IMap.cs" />
     <Compile Include="Assets\Goap\State\IState.cs" />
   </ItemGroup>
   <ItemGroup>

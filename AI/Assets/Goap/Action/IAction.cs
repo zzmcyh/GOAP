@@ -16,7 +16,7 @@ namespace SRAI
     }
 
 
-    public abstract class ActionBase<TAction, TState> : IAction<TAction, TState>
+    public abstract class ActionBase<TAction, TState, TGoal> : IAction<TAction, TState>
     {
         public abstract TAction Label { get; }
 
@@ -31,9 +31,9 @@ namespace SRAI
         public IState<TState> Effect { get; }
 
 
-        private IAgent<TState> _agent;
+        private IAgent<TState, TAction, TGoal> _agent;
 
-        public ActionBase(IAgent<TState> agent)
+        public ActionBase(IAgent<TState, TAction, TGoal> agent)
         {
             Preconditions = InitPreconditions();
             Effect = InitEffects();

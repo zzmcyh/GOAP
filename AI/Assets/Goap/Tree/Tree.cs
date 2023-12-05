@@ -27,7 +27,7 @@ namespace SRAI
 
         private static int _id;
         public int ID { get; private set; }
-        IActionHandler<TAction> ActionHandler { get;  set; }
+        public IActionHandler<TAction> ActionHandler { get;  set; }
 
         public IState CurrentState { get; set; }
 
@@ -47,6 +47,14 @@ namespace SRAI
             ParentNode = null;
             CurrentState = CurrentState.CreateState();
             GoalState = GoalState.CreateState();
+        }
+
+
+        public void CopyState(TreeNode<TAction> otherNode)
+        {
+            CurrentState.CopyState(otherNode.CurrentState);
+            GoalState.CopyState(otherNode.GoalState);
+
         }
 
         public static void Reset()

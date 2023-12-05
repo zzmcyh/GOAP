@@ -9,6 +9,7 @@ namespace SRAI
 {
     public interface IActionManager<TAction>
     {
+        Dictionary<string, HashSet<IActionHandler<TAction>>> EffectsAndActionMap { get; }
         TAction GetDefualtActionLabel();
         bool IsPerformAction { get; set; }
         void AddHander(TAction label);
@@ -26,6 +27,9 @@ namespace SRAI
     {
         private Dictionary<TAction, IActionHandler<TAction>> _handlerDic;
         private List<IActionHandler<TAction>> _InterruptibleHandlers;
+        public Dictionary<string, HashSet<IActionHandler<TAction>>> EffectsAndActionMap { get; private set; }
+
+
 
         private IFSM<TAction> _fsm;
     
@@ -48,6 +52,7 @@ namespace SRAI
             InitActionHandlers();
             InitFSM();
             InitInterruptibleHandlers();
+            InitEffectAndActionMap();
         }
 
         private void InitFSM()
@@ -57,6 +62,25 @@ namespace SRAI
                 _fsm.AddState(item.Key,item.Value);
             }
         }
+
+        private void InitEffectAndActionMap()
+        {
+            EffectsAndActionMap = new Dictionary<string, HashSet<IActionHandler<TAction>>>();
+
+            foreach (var item in _handlerDic)
+            {
+                IState state = item.Value.Action.Effect;
+                if (state==null)
+                {
+                    continue;
+                }
+                foreach (var key in state.GetKeys())
+                {
+
+                }
+            }
+        }
+
 
         private void InitInterruptibleHandlers()
         {

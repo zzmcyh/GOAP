@@ -19,6 +19,15 @@ namespace SRAI
 
         IState InversionValue();
 
+        ICollection<string> GetNotExistKeys(IState otherState);
+
+        ICollection<string> GetValueDifference(IState otherState);
+
+
+        void CopyState(IState otherState);
+
+        IState GetSameData(IState otherState);
+
     }
 
     public static class IStateExtend
@@ -40,6 +49,9 @@ namespace SRAI
         {
             _dataTable = new Dictionary<string, bool>();
         }
+
+
+
 
         public bool Get(string key)
         {
@@ -140,6 +152,56 @@ namespace SRAI
         public IState CreateState()
         {
             return new State();
+        }
+
+        public ICollection<string> GetNotExistKeys(IState otherState)
+        {
+            List<string> keys = new List<string>();
+
+            foreach (var item in otherState.GetKeys())
+            {
+                if (!_dataTable.ContainsKey(item))
+                {
+                    keys.Add(item);
+                }
+            }
+
+            return keys;
+        }
+
+        public ICollection<string> GetValueDifference(IState otherState)
+        {
+            List<string> keys = new List<string>();
+            foreach (var item in otherState.GetKeys())
+            {
+                if (!_dataTable.ContainsKey(item) || otherState.Get(item) != _dataTable[item])
+                {
+                    keys.Add(item);
+                }
+            }
+            return keys;
+        }
+
+        public void CopyState(IState otherState)
+        {
+            Clear();
+            Set(otherState);
+        }
+
+        public IState GetSameData(IState otherState)
+        {
+            IState temp = new State();
+
+
+            foreach (var item in _dataTable)
+            {
+                if (otherState.ContainKey(item.Key))
+                {
+                    temp.Set(item.Key,item.Value);
+                }
+            }
+
+            return temp;
         }
     }
 

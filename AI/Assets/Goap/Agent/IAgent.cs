@@ -45,9 +45,9 @@ namespace SRAI
         }
 
         protected abstract DebugBase InitDebugBase();
-        protected abstract IMap<TAction, TGolal> InitMap();
+        protected abstract IMap<TAction, TGoal> InitMap();
         protected abstract IActionManager<TAction> InitIActionManager();
-        protected abstract IGoalManager<TGolal> InitIGoalManager();
+        protected abstract IGoalManager<TGoal> InitIGoalManager();
 
         public void UpdateDate()
         {

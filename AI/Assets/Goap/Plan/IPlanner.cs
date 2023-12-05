@@ -49,7 +49,7 @@ namespace SRAI
 
         private TreeNode<TAction> Plan(IGoal<TGoal> goal)
         {
-
+            
         }
     }
 

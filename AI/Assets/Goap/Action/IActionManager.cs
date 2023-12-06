@@ -141,11 +141,11 @@ namespace SRAI
 
         public void UpdateData() 
         {
-            foreach (var item in _InterruptibleHandlers)
+            foreach (var handler in _InterruptibleHandlers)
             {
-                if (item.CanPerformAction)
+                if (handler.CanPerformAction)
                 {
-                    //todo  打断计划的api
+                    _agent.Performer.Interruptible();
                 }
             }
         }
